@@ -19,6 +19,22 @@ GRADLE_TASK=${GRADLE_TASK-stage}
 
 export_env_dir $ENV_DIR
 
+#install python package manager
+wget http://pypi.python.org/packages/source/s/setuptools/setuptools-0.6c11.tar.gz#md5=7df2a529a074f613b509fb44feefe74e
+tar xvfz setuptools-0.6c11.tar.gz
+cd setuptools-0.6c11
+
+mkdir -p /app/python/lib/python2.7/site-packages/
+export PYTHONPATH="/app/python/lib/python2.7/site-packages/"
+python setup.py install --prefix=/app/python
+export PATH=/app/python/bin:$PATH
+
+#install ansible
+easy_install --prefix=/app/python/ ansible
+
+#run ansible playbook
+ansible-playbook /app/vagrant/provisioning/acit_staging.yml --vault-password-file /var/go/vaultpass.txt
+
 JVM_COMMON_BUILDPACK=${JVM_COMMON_BUILDPACK:-"https://codon-buildpacks.s3.amazonaws.com/buildpacks/heroku/jvm-common.tgz"}
 mkdir -p /tmp/jvm-common
 curl --silent --location $JVM_COMMON_BUILDPACK | tar xzm -C /tmp/jvm-common --strip-components=1
