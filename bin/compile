@@ -36,7 +36,9 @@ easy_install --prefix=/app/python/ ansible
 echo $VAULT_PASSWORD > /app/vaultpass.txt
 
 #run ansible playbook
-ansible-playbook vagrant/provisioning/acit_staging.yml --inventory-file=vagrant/provisioning/hosts --vault-password-file /app/vaultpass.txt
+pwd
+ls -al
+ansible-playbook $BUILD_DIR/vagrant/provisioning/acit_staging.yml --inventory-file=$BUILD_DIR/vagrant/provisioning/hosts --vault-password-file /app/vaultpass.txt
 
 #delete vault password file
 rm /app/vaultpass.txt
