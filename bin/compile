@@ -32,8 +32,14 @@ export PATH=/app/python/bin:$PATH
 #install ansible
 easy_install --prefix=/app/python/ ansible
 
+#create vault password file
+echo $VAULT_PASSWORD > /app/vaultpass.txt
+
 #run ansible playbook
-ansible-playbook /app/vagrant/provisioning/acit_staging.yml --vault-password-file /var/go/vaultpass.txt
+ansible-playbook /app/vagrant/provisioning/acit_staging.yml --vault-password-file /app/vaultpass.txt
+
+#delete vault password file
+rm /app/vaultpass.txt
 
 JVM_COMMON_BUILDPACK=${JVM_COMMON_BUILDPACK:-"https://codon-buildpacks.s3.amazonaws.com/buildpacks/heroku/jvm-common.tgz"}
 mkdir -p /tmp/jvm-common
